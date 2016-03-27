@@ -16,22 +16,29 @@ angular
                     var title = scope.title;
                     var keys = scope.keys;
                     var headers = scope.headers;
+                    var filename = scope.filename;
 
                     if (data && !Array.isArray(data)) throwError("Data must be a valid javascript array");
                     if (keys && !Array.isArray(keys)) throwError("Keys must be a valid javascript array");
+                    if (headers && !Array.isArray(headers)) throwError("Headers must be a valid javascript array");
+
+                    // Remove any angular added keys
+                    var json_data = angular.toJson(data);
+                    data = JSON.parse(json_data);
                     if (!data.length) throwError("No data available to export");
 
-
-                    if (keys && keys.length)
-                        data = filterArrayKeys(data, keys);
-                    if (!headers) {
+                    // Get keys & headers to be exported
+                    if (!keys) {
                         var sample_data = data[0];
                         keys = Object.keys(sample_data);
-                        headers = convertToUppercase(keys);
                     }
-
-                    if (headers.length != data.length)
+                    if (headers && (headers.length != keys.length)) {
                         throwError("Headers must be the same length as the " + (keys ? "keys": "data") + " to export");
+                    } else if (!headers) {
+                        headers = convertToUppercase(keys);
+                    } 
+
+                    data = filterArrayKeys(data, keys);                   
 
 
                     //////////////////////////
@@ -39,7 +46,9 @@ angular
                     //////////////////////////
 
                     var csv = '';
-                    if (title) csv += title + '\r\n\n';
+                    if (title) {
+                        csv += title + '\r\n\n';
+                    }
                     csv += headers.join(",") + '\r\n';
 
                     for (var i = 0; i < data.length; i++) {
@@ -51,9 +60,11 @@ angular
                         csv += row + '\r\n';
                     }
 
-                    if (csv == '') throwError("Invalid Data");
+                    if (csv == '') {
+                        throwError("Invalid Data");
+                    }
 
-                    var file = filename || ("Export " + getDate());
+                    if (!filename) filename = "Export " + getDate();
                     filename = filename.replace(/ /g, "_");
                     var uri = 'data:text/csv;charset=utf-8,' + escape(csv);
                     var link = document.createElement("a");

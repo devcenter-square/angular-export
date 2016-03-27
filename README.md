@@ -2,7 +2,7 @@
 Angular directive for exporting and downloading JSON data into a CSV file
 
 ## Demo  
-Demo is running in [Plunker here.](http://embed.plnkr.co/rTDfek/preview).
+Demo is running in [Plunker here.](http://embed.plnkr.co/gtJeThGwByl0lv5GvF1l/).
 
 ## Usage  
 

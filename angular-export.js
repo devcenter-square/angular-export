@@ -4,11 +4,11 @@ angular
         return {
             restrict: 'AE',
             scope: {
-                data: '=data',
-                title: '=title',
-                keys: '=keys',
-                headers: '=headers',
-                filename: '=filename'
+                data: '=exportData',
+                title: '=exportTitle',
+                keys: '=exportKeys',
+                headers: '=exportHeaders',
+                filename: '=exportFilename'
             },
             link: function(scope, el, attrs) {
                 el.bind('click', function() {
@@ -17,6 +17,7 @@ angular
                     var keys = scope.keys;
                     var headers = scope.headers;
                     var filename = scope.filename;
+                    console.log(data)
 
                     if (data && !Array.isArray(data)) throwError("Data must be a valid javascript array");
                     if (keys && !Array.isArray(keys)) throwError("Keys must be a valid javascript array");

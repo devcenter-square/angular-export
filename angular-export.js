@@ -17,7 +17,6 @@ angular
                     var keys = scope.keys;
                     var headers = scope.headers;
                     var filename = scope.filename;
-                    console.log(data)
 
                     if (data && !Array.isArray(data)) throwError("Data must be a valid javascript array");
                     if (keys && !Array.isArray(keys)) throwError("Keys must be a valid javascript array");
